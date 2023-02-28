@@ -1,13 +1,15 @@
 'use client';
 
 import { useToasts } from '@/config/toast';
+import {useTranslations} from 'next-intl';
 
-export default function Home() {
+export default async function Home({ params: { lang }}: any) {
   const { success, danger, info, warning } = useToasts();
+  const t = useTranslations('common');
 
   return (
     <div className="font-primary">
-      <p>Hello Next 13</p>
+      <p>{t('home')}</p>
       <button
         className="border rounded bg-green-500 p-2 text-white"
         onClick={() => success('Test Toast Success')}
