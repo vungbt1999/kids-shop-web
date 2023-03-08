@@ -1,4 +1,4 @@
-export type ThemeConfig = {
+export type UIConfig = {
   colors: ColorPalette;
   font: {
     primary: string;
@@ -17,6 +17,25 @@ export type ColorPalette = {
   warning?: ColorPaletteConfig;
   danger?: ColorPaletteConfig;
   info?: ColorPaletteConfig;
+
+  light?: ColorPaletteConfig;
+  dark?: ColorPaletteConfig;
+  facebook?: ColorPaletteConfig;
+  twitter?: ColorPaletteConfig;
+  linkedin?: ColorPaletteConfig;
+  gray?: ColorPaletteConfig;
+
+  blue?: ColorPaletteConfig;
+  indigo?: ColorPaletteConfig;
+  purple?: ColorPaletteConfig;
+  pink?: ColorPaletteConfig;
+  red?: ColorPaletteConfig;
+  orange?: ColorPaletteConfig;
+  yellow?: ColorPaletteConfig;
+  green?: ColorPaletteConfig;
+  teal?: ColorPaletteConfig;
+  cyan?: ColorPaletteConfig;
+  white?: ColorPaletteConfig;
 };
 
 export type ColorPaletteConfig = {
@@ -31,4 +50,23 @@ export type ColorPaletteConfig = {
   _700?: string;
   _800?: string;
   _900?: string;
+};
+
+export const ScreenConfig = {
+  xs: 0,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
+  '3xl': 1728
+};
+
+export type ScreenConfigKey = keyof typeof ScreenConfig;
+
+export type Screen = {
+  sizes: Record<ScreenConfigKey, boolean>;
+  width: number;
+  height: number;
+  isMobile: boolean;
 };

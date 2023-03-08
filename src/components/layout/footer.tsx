@@ -1,5 +1,5 @@
 import React from 'react';
 
-export function RootFooter() {
+export function FooterLayout() {
   return <div>RootFooter</div>;
 }

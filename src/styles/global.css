@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+main {
+  font-family: var(--font-primary);
+}
+
 .toast-content {
   transition: 0.3s ease;
   background-position: 15px;
