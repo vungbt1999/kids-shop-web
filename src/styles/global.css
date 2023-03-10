@@ -4,6 +4,7 @@
 
 main {
   font-family: var(--font-primary);
+  color: var(--color-dark);
 }
 
 .toast-content {
@@ -55,4 +56,35 @@ main {
   to {
     transform: translateX(0);
   }
+}
+
+/* Nav Mobile */
+#input_nav_mobile:checked ~ .menu-mobile {
+  transform: translateX(15%);
+  opacity: 1;
+}
+
+#input_nav_mobile:checked ~ .opacity-menu-mobile {
+  transform: translateX(0);
+  opacity: 0.8;
+}
+
+#input_nav_mobile:checked ~ .icon-nav-mobile {
+  display: none;
+}
+
+#input_nav_mobile:checked ~ .icon-close-nav-mobile {
+  display: block;
+}
+
+.icon-nav-mobile,
+.icon-close-nav-mobile,
+.opacity-menu-mobile {
+  transition: all 0.3s ease-in;
+}
+
+.menu-mobile,
+.opacity-menu-mobile {
+  transition: all 0.3s ease-in;
+  opacity: 0;
 }
