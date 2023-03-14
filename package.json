@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn watch:graphql & next dev -p 4200",
+    "start:dev": "next dev -p 4200",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"./src/**/*.{ts,tsx,json,css,scss,less}\" --config ./.prettierrc"
+    "format": "prettier --write \"./src/**/*.{ts,tsx,json,css,scss,less}\" --config ./.prettierrc",
+    "gen:graphql": "DOTENV_CONFIG_PATH=.env.production graphql-codegen --require dotenv/config --config codegen.ts",
+    "watch:graphql": "graphql-codegen --require dotenv/config --config codegen.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.11",
     "@next/bundle-analyzer": "^13.2.3",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
@@ -22,6 +26,7 @@
     "graphql-request": "^5.2.0",
     "i18next": "^22.4.11",
     "merge-options": "^3.0.4",
+    "moment": "^2.29.4",
     "next": "13.2.3",
     "next-i18next": "^13.2.1",
     "react": "18.2.0",

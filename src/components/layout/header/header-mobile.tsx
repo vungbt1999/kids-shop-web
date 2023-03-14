@@ -1,13 +1,11 @@
 import { IconName, RenderIcon } from '@/components/icons';
 import Logo from '@/components/logo';
 import Link from 'next/link';
-import React from 'react';
-import { useTranslation } from 'next-i18next';
 import { HeaderLayoutProps } from '.';
+import SearchPopup from './search-popup.tsx';
 
 export default function HeaderMobile({ navigation }: HeaderLayoutProps) {
   const actionsMenu: IconName[] = ['search', 'user', 'heart', 'cart'];
-  const { t } = useTranslation();
 
   const onClickActionMenu = (name: IconName) => {
     console.log('name:', name);
@@ -72,14 +70,7 @@ export default function HeaderMobile({ navigation }: HeaderLayoutProps) {
       </div>
 
       {/** Search */}
-      <div className="fixed top-0 right-0 left-0 bottom-0 w-full h-full bg-white z-[1]">
-        <div className="flex items-center justify-center px-8 py-6 border-b border-gray-100 relative">
-          <p className="text-lg font-medium">{t('search_products')}</p>
-          <div className="absolute top-1/2 right-8 -translate-y-1/2">
-            <RenderIcon name="close" className="text-secondary opacity-50" />
-          </div>
-        </div>
-      </div>
+      <SearchPopup />
     </div>
   );
 }

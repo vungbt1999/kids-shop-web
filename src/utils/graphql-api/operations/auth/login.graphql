@@ -1,0 +1,11 @@
+mutation auth_login($email: String!, $password: String!) {
+  auth_login(email: $email, password: $password) {
+    accessToken
+    accessTokenExpires
+    refreshToken
+    profile {
+      id
+      email
+    }
+  }
+}

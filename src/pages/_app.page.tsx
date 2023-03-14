@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app';
 import App from 'next/app';
 import { Fragment } from 'react';
 import '../styles/global.css';
+import { ApiClientProvider } from '@/utils/graphql-api';
 
 type MyAppProps = {
   pageProps: SSRConfig;
@@ -45,17 +46,20 @@ function MyApp({ Component, pageProps, seo }: MyAppProps) {
       }
     ]
   };
+
   return (
-    <UIProvider config={themeConfig}>
-      <Layout header={headerMock}>
-        <ToastProvider>
-          <Fragment>
-            {seo && <SEO {...seo} />}
-            <Component {...pageProps} />
-          </Fragment>
-        </ToastProvider>
-      </Layout>
-    </UIProvider>
+    <ApiClientProvider apiUrl={String(process.env.GRAPHQL_API_URL)}>
+      <UIProvider config={themeConfig}>
+        <Layout header={headerMock}>
+          <ToastProvider>
+            <Fragment>
+              {seo && <SEO {...seo} />}
+              <Component {...pageProps} />
+            </Fragment>
+          </ToastProvider>
+        </Layout>
+      </UIProvider>
+    </ApiClientProvider>
   );
 }
 

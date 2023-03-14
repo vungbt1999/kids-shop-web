@@ -1,3 +1,5 @@
+import { User } from '@/utils/graphql-api/generated';
+
 export type Format = 'thumbnail' | 'medium';
 
 export type ImageFormat = Record<
