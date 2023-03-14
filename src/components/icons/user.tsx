@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { IconProps } from '.';
 
-export default function User({ className, transform, strokeWidth }: IconProps) {
+export default function User({ className, transform, strokeWidth = 2 }: IconProps) {
   return (
     <svg
       className={clsx(className, 'w-6', 'w-6')}

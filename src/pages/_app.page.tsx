@@ -1,12 +1,13 @@
+import MainLayout from '@/components/layout';
 import { SEO, SEOData } from '@/components/seo';
 import { themeConfig, UIProvider } from '@/config/themes';
-import type { AppProps } from 'next/app';
-import { Fragment } from 'react';
-import { SSRConfig, appWithTranslation } from 'next-i18next';
-import MainLayout from '@/components/layout';
 import { ToastProvider } from '@/config/toast';
+import { appWithTranslation, SSRConfig } from 'next-i18next';
+import type { AppProps } from 'next/app';
 import App from 'next/app';
+import { Fragment } from 'react';
 import '../styles/global.css';
+import { ApiClientProvider } from '@/utils/graphql-api';
 
 type MyAppProps = {
   pageProps: SSRConfig;
@@ -17,18 +18,48 @@ const DefaultLayout = ({ children }: any) => <Fragment>{children}</Fragment>;
 
 function MyApp({ Component, pageProps, seo }: MyAppProps) {
   const Layout = (Component as any).withPageLayout ? MainLayout : DefaultLayout;
+  const headerMock = {
+    navigation: [
+      {
+        title: 'Home',
+        url: '/'
+      },
+      {
+        title: 'Catalog',
+        url: '#'
+      },
+      {
+        title: 'Shop',
+        url: '#'
+      },
+      {
+        title: 'Pages',
+        url: '#'
+      },
+      {
+        title: 'Blog',
+        url: '#'
+      },
+      {
+        title: 'Docs',
+        url: '#'
+      }
+    ]
+  };
 
   return (
-    <UIProvider config={themeConfig}>
-      <Layout>
-        <ToastProvider>
-          <Fragment>
-            {seo && <SEO {...seo} />}
-            <Component {...pageProps} />
-          </Fragment>
-        </ToastProvider>
-      </Layout>
-    </UIProvider>
+    <ApiClientProvider apiUrl={String(process.env.GRAPHQL_API_URL)}>
+      <UIProvider config={themeConfig}>
+        <Layout header={headerMock}>
+          <ToastProvider>
+            <Fragment>
+              {seo && <SEO {...seo} />}
+              <Component {...pageProps} />
+            </Fragment>
+          </ToastProvider>
+        </Layout>
+      </UIProvider>
+    </ApiClientProvider>
   );
 }
 
