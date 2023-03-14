@@ -2,8 +2,8 @@ import Input from '@/components/common/input';
 import { useAuth } from '@/config/auth';
 import { useToasts } from '@/config/toast';
 import { withTranslations } from '@/middleware/withSSTranslations';
-import { useApiClient } from '@/utils/graphql-api';
-import { LoginResult } from '@/utils/graphql-api/generated';
+import { useApiClient } from '@/config/graphql-api';
+import { LoginResult } from '@/config/graphql-api/generated';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ export default function LoginPage() {
   const { changeAuthInfo } = useAuth();
   const router = useRouter();
 
-  const { danger } = useToasts();
+  const { success } = useToasts();
 
   const schema = yup
     .object({
@@ -37,6 +37,7 @@ export default function LoginPage() {
       const loginResult = res.auth_login;
       if (loginResult) {
         changeAuthInfo(loginResult as LoginResult);
+        success('Login success.');
         router.push('/product');
       }
     } catch (error: any) {}

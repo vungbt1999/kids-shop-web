@@ -1,43 +1,52 @@
-import { useApiClient } from '@/utils/graphql-api';
-import { LoginResult } from '@/utils/graphql-api/generated';
+import { ApiClientProvider, ApiClientProviderProps } from '@/config/graphql-api';
+import { LoginResult } from '@/config/graphql-api/generated';
 import localStorageUtils, { KeyStorage } from '@/utils/local-storage.utils';
-import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 export type AuthContextProps = {
   authInfo: LoginResult | null;
-  changeAuthInfo: (_authInfo: LoginResult) => void;
+  changeAuthInfo: (_authInfo: LoginResult | null) => void;
 };
 
+const localeAuth: LoginResult = localStorageUtils.getObject(KeyStorage.AUTH, null);
 const initState: AuthContextProps = {
-  authInfo: null,
+  authInfo: localeAuth,
   changeAuthInfo: (_authInfo) => {}
 };
 
 const AuthContext = createContext(initState);
 
-export type AuthProviderProps = {
+export interface AuthProviderProps extends Pick<ApiClientProviderProps, 'apiUrl'> {
   children: JSX.Element | ReactNode;
-};
+}
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [authInfo, setAuthInfo] = useState<LoginResult | null>(null);
-  const { setToken } = useApiClient();
+export function AuthProvider({ children, apiUrl }: AuthProviderProps) {
+  const [authInfo, setAuthInfo] = useState<LoginResult | null>(initState.authInfo);
 
   useEffect(() => {
-    const auth: LoginResult = localStorageUtils.getObject(KeyStorage.AUTH, null);
-    if (auth) {
-      setAuthInfo(auth);
-      setToken(auth.accessToken);
-    }
+    getAuthInfo();
   }, []);
 
-  const changeAuthInfo = useCallback((payload: LoginResult) => {
+  const getAuthInfo = () => {
+    if (localeAuth) {
+      setAuthInfo(localeAuth);
+    }
+  };
+
+  const changeAuthInfo = useCallback((payload: LoginResult | null) => {
+    console.log('payload:', payload);
     setAuthInfo(payload);
     localStorageUtils.setObject(KeyStorage.AUTH, payload);
   }, []);
 
+  console.log('auth-provider===>authInfo:', authInfo);
+
   return (
-    <AuthContext.Provider value={{ authInfo, changeAuthInfo }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ authInfo, changeAuthInfo }}>
+      <ApiClientProvider apiUrl={apiUrl} token={authInfo?.accessToken}>
+        {children}
+      </ApiClientProvider>
+    </AuthContext.Provider>
   );
 }
 

@@ -1,5 +1,6 @@
 import MainLayout from '@/components/layout';
 import { SEO, SEOData } from '@/components/seo';
+import { AuthProvider } from '@/config/auth';
 import { themeConfig, UIProvider } from '@/config/themes';
 import { ToastProvider } from '@/config/toast';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
@@ -7,7 +8,6 @@ import type { AppProps } from 'next/app';
 import App from 'next/app';
 import { Fragment } from 'react';
 import '../styles/global.css';
-import { ApiClientProvider } from '@/utils/graphql-api';
 
 type MyAppProps = {
   pageProps: SSRConfig;
@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps, seo }: MyAppProps) {
   };
 
   return (
-    <ApiClientProvider apiUrl={String(process.env.GRAPHQL_API_URL)}>
+    <AuthProvider apiUrl={String(process.env.GRAPHQL_API_URL)}>
       <UIProvider config={themeConfig}>
         <Layout header={headerMock}>
           <ToastProvider>
@@ -59,7 +59,7 @@ function MyApp({ Component, pageProps, seo }: MyAppProps) {
           </ToastProvider>
         </Layout>
       </UIProvider>
-    </ApiClientProvider>
+    </AuthProvider>
   );
 }
 

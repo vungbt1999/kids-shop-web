@@ -1,7 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import React, { ReactNode, useContext, useMemo, useState } from 'react';
 
-import { AuthProvider } from '@/config/auth';
 import { getSdk } from '../generated';
 
 const defaultHeaders = {};
@@ -30,7 +29,7 @@ export const ApiClientContext = React.createContext({
   setToken: (_token?: string | null) => {}
 });
 
-type ApiClientProviderProps = {
+export type ApiClientProviderProps = {
   children?: ReactNode;
   token?: string | null;
   apiUrl: string;
@@ -41,16 +40,14 @@ export const ApiClientProvider = (props: ApiClientProviderProps) => {
   const apiClient = useMemo(() => getApiClient(props.apiUrl, token), [token, props.apiUrl]);
 
   return (
-    <AuthProvider>
-      <ApiClientContext.Provider
-        value={{
-          apiClient,
-          setToken
-        }}
-      >
-        {props.children}
-      </ApiClientContext.Provider>
-    </AuthProvider>
+    <ApiClientContext.Provider
+      value={{
+        apiClient,
+        setToken
+      }}
+    >
+      {props.children}
+    </ApiClientContext.Provider>
   );
 };
 
