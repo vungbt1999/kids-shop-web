@@ -1,13 +1,17 @@
-import { useAuth } from '@/config/auth';
-import { withAuthClient } from '@/middleware/withAuthClient';
-import { useApiClient } from '@/utils/graphql-api';
-import { Product } from '@/utils/graphql-api/generated';
+import { Product } from '@/config/graphql-api/generated';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { withTranslations } from '@/middleware/withSSTranslations';
+import { withSSAuth } from '@/middleware/withAuth';
+import { signOut } from 'next-auth/react';
+import { useApiClient } from '@/config/graphql-api/provider';
 
-function ProductPage() {
-  const { apiClient } = useApiClient();
+export default function ProductPage() {
+  const router = useRouter();
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { apiClient } = useApiClient();
+
   useEffect(() => {
     fetchListProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,7 +33,18 @@ function ProductPage() {
 
   return (
     <div>
-      <h1 className="text-center text-2xl mt-16">Product List</h1>
+      <div className="max-w-[30%] mx-auto mb-16">
+        <h1 className="text-center text-2xl mt-16">Product List</h1>
+        <button
+          type="submit"
+          className="mt-6 text-center border w-full py-3 font-medium bg-gray-900 border-gray-900 text-white"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
+        </button>
+      </div>
       {loading && <>Loading...</>}
       {data.length <= 0 && <h2>Product Empty</h2>}
       <div>{data.map((item) => JSON.stringify(item))}</div>
@@ -37,5 +52,4 @@ function ProductPage() {
   );
 }
 
-ProductPage.withPageLayout = true;
-export default withAuthClient(ProductPage);
+export const getServerSideProps = withSSAuth(withTranslations());

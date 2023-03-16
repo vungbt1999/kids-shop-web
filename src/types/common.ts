@@ -1,4 +1,4 @@
-import { User } from '@/utils/graphql-api/generated';
+import { User } from '@/config/graphql-api/generated';
 
 export type Format = 'thumbnail' | 'medium';
 
