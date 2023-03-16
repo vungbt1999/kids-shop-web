@@ -1,21 +1,14 @@
 import Input from '@/components/common/input';
-import { useAuth } from '@/config/auth';
-import { useToasts } from '@/config/toast';
 import { withTranslations } from '@/middleware/withSSTranslations';
-import { useApiClient } from '@/config/graphql-api';
-import { LoginResult } from '@/config/graphql-api/generated';
+import { withSSUnAuth } from '@/middleware/withSSUnAuth.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 export default function LoginPage() {
-  const { apiClient } = useApiClient();
-  const { changeAuthInfo } = useAuth();
   const router = useRouter();
-
-  const { success } = useToasts();
-
   const schema = yup
     .object({
       email: yup.string().required('Email must be required.'),
@@ -32,15 +25,8 @@ export default function LoginPage() {
   });
 
   const onSubmit: SubmitHandler<{ email: string; password: string }> = async (data) => {
-    try {
-      const res = await apiClient.auth_login({ ...data });
-      const loginResult = res.auth_login;
-      if (loginResult) {
-        changeAuthInfo(loginResult as LoginResult);
-        success('Login success.');
-        router.push('/product');
-      }
-    } catch (error: any) {}
+    const result = await signIn('credentials', { ...data, redirect: false });
+    if (result?.ok && result.status === 200) router.replace('/');
   };
 
   return (
@@ -60,4 +46,4 @@ export default function LoginPage() {
   );
 }
 
-export const getStaticProps = withTranslations();
+export const getServerSideProps = withSSUnAuth(withTranslations());

@@ -1,16 +1,17 @@
-import { withAuthClient } from '@/middleware/withAuthClient';
-import { useApiClient } from '@/config/graphql-api';
 import { Product } from '@/config/graphql-api/generated';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/config/auth';
 import { useRouter } from 'next/router';
+import { withTranslations } from '@/middleware/withSSTranslations';
+import { withSSAuth } from '@/middleware/withAuth';
+import { signOut } from 'next-auth/react';
+import { useApiClient } from '@/config/graphql-api/provider';
 
-function ProductPage() {
-  const { apiClient } = useApiClient();
-  const { changeAuthInfo } = useAuth();
+export default function ProductPage() {
   const router = useRouter();
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { apiClient } = useApiClient();
+
   useEffect(() => {
     fetchListProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,8 +39,7 @@ function ProductPage() {
           type="submit"
           className="mt-6 text-center border w-full py-3 font-medium bg-gray-900 border-gray-900 text-white"
           onClick={() => {
-            changeAuthInfo(null);
-            router.push('/login');
+            signOut();
           }}
         >
           Logout
@@ -52,5 +52,4 @@ function ProductPage() {
   );
 }
 
-ProductPage.withPageLayout = true;
-export default withAuthClient(ProductPage);
+export const getServerSideProps = withSSAuth(withTranslations());

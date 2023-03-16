@@ -1,52 +1,35 @@
-import { GraphQLClient } from 'graphql-request';
-import React, { ReactNode, useContext, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import React, { ReactNode, useContext, useMemo } from 'react';
 
-import { getSdk } from '../generated';
-
-const defaultHeaders = {};
-
-const getHeaders = (token?: string | null) => {
-  const newHeaders: Record<string, string> = { ...defaultHeaders };
-  if (token) {
-    newHeaders['Authorization'] = `Bearer ${token}`;
-  }
-  return newHeaders;
-};
-
-export const getApiClient = (
-  apiUrl = process.env.GRAPHQL_API_URL || '/graphql',
-  token?: string | null
-) => {
-  return getSdk(
-    new GraphQLClient(apiUrl, {
-      headers: getHeaders(token)
-    })
-  );
-};
+import { apiClientInstance, getApiClient } from '..';
 
 export const ApiClientContext = React.createContext({
-  apiClient: getApiClient(''),
-  setToken: (_token?: string | null) => {}
+  apiClient: apiClientInstance
 });
 
-export type ApiClientProviderProps = {
-  children?: ReactNode;
-  token?: string | null;
-  apiUrl: string;
+type ApiClientProviderProps = {
+  children: JSX.Element | ReactNode;
 };
 
-export const ApiClientProvider = (props: ApiClientProviderProps) => {
-  const [token, setToken] = useState(props.token);
-  const apiClient = useMemo(() => getApiClient(props.apiUrl, token), [token, props.apiUrl]);
+export const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
+  const { data: session } = useSession();
+
+  const apiClient = useMemo(() => {
+    const accessToken = (session as any)?.token?.accessToken;
+    if (accessToken) {
+      return getApiClient(accessToken);
+    }
+    return apiClientInstance;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [(session as any)?.token?.accessToken]);
 
   return (
     <ApiClientContext.Provider
       value={{
-        apiClient,
-        setToken
+        apiClient
       }}
     >
-      {props.children}
+      {children}
     </ApiClientContext.Provider>
   );
 };

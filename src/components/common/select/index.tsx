@@ -8,9 +8,17 @@ export type SelectProps = {
   control?: any;
   name: string;
   options: { title: string; value: string }[];
+  className?: string;
 };
 
-export default function Select({ placeholder, defaultValue, control, name, options }: SelectProps) {
+export default function Select({
+  placeholder,
+  defaultValue,
+  control,
+  name,
+  options,
+  className
+}: SelectProps) {
   return (
     <Controller
       name={name}
@@ -20,7 +28,7 @@ export default function Select({ placeholder, defaultValue, control, name, optio
         const errorMss = errorField[`${name}`]?.message;
 
         return (
-          <div>
+          <div className={className}>
             <select
               {...field}
               placeholder={placeholder}
@@ -33,7 +41,9 @@ export default function Select({ placeholder, defaultValue, control, name, optio
                 }
               )}
             >
-              <option value={defaultValue}>{placeholder}</option>
+              <option value={defaultValue} className="capitalize">
+                {placeholder}
+              </option>
               {options.map((item, index) => {
                 return (
                   <option key={index} value={item.value}>

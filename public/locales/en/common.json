@@ -1,6 +1,7 @@
 {
   "home": "Home page",
   "search": "Search",
-  "search_products": "Search Products",
-  "all_categories": "All Categories"
+  "search_products": "Search products",
+  "all_categories": "All categories",
+  "search_results": "Search results"
 }

@@ -6,7 +6,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 module.exports = withBundleAnalyzer({
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   productionBrowserSourceMaps: process.env.ENVIRONMENT === "development",
   pageExtensions: ['page.ts', 'page.tsx'],

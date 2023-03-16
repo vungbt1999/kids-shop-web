@@ -1,22 +1,26 @@
 import MainLayout from '@/components/layout';
 import { SEO, SEOData } from '@/components/seo';
-import { AuthProvider } from '@/config/auth';
 import { themeConfig, UIProvider } from '@/config/themes';
 import { ToastProvider } from '@/config/toast';
 import { appWithTranslation, SSRConfig } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import App from 'next/app';
 import { Fragment } from 'react';
+import { SessionProvider, getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+
 import '../styles/global.css';
+import { ApiClientProvider } from '@/config/graphql-api/provider';
 
 type MyAppProps = {
   pageProps: SSRConfig;
   seo: SEOData;
+  session: Session | null;
 } & AppProps;
 
 const DefaultLayout = ({ children }: any) => <Fragment>{children}</Fragment>;
 
-function MyApp({ Component, pageProps, seo }: MyAppProps) {
+function MyApp({ Component, pageProps, seo, session }: MyAppProps) {
   const Layout = (Component as any).withPageLayout ? MainLayout : DefaultLayout;
   const headerMock = {
     navigation: [
@@ -26,40 +30,42 @@ function MyApp({ Component, pageProps, seo }: MyAppProps) {
       },
       {
         title: 'Catalog',
-        url: '#'
+        url: '/#'
       },
       {
         title: 'Shop',
-        url: '#'
+        url: '/#'
       },
       {
         title: 'Pages',
-        url: '#'
+        url: '/#'
       },
       {
         title: 'Blog',
-        url: '#'
+        url: '/#'
       },
       {
         title: 'Docs',
-        url: '#'
+        url: '/#'
       }
     ]
   };
 
   return (
-    <AuthProvider apiUrl={String(process.env.GRAPHQL_API_URL)}>
-      <UIProvider config={themeConfig}>
-        <Layout header={headerMock}>
-          <ToastProvider>
-            <Fragment>
-              {seo && <SEO {...seo} />}
-              <Component {...pageProps} />
-            </Fragment>
-          </ToastProvider>
-        </Layout>
-      </UIProvider>
-    </AuthProvider>
+    <SessionProvider session={session}>
+      <ApiClientProvider>
+        <UIProvider config={themeConfig}>
+          <Layout header={headerMock}>
+            <ToastProvider>
+              <Fragment>
+                {seo && <SEO {...seo} />}
+                <Component {...pageProps} />
+              </Fragment>
+            </ToastProvider>
+          </Layout>
+        </UIProvider>
+      </ApiClientProvider>
+    </SessionProvider>
   );
 }
 
@@ -75,7 +81,8 @@ MyApp.getInitialProps = async (appContext: any) => {
         url: 'https://storage.googleapis.com/doscms.metados.com/assets/logo_mini_07e4537257/logo_mini_07e4537257.png'
       },
       keywords: 'kids shop'
-    }
+    },
+    session: await getSession(appContext.ctx)
   };
 };
 

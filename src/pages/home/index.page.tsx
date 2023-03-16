@@ -1,10 +1,11 @@
-import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { withTranslations } from '@/middleware/withSSTranslations';
 import { withRevalidate } from '@/middleware/withRevalidate';
 import { GetStaticPropsContext } from 'next';
 import { SEO, SEOData } from '@/components/seo';
 import { RenderIcon } from '@/components/icons';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 type Props = {
   seo: SEOData;
@@ -12,6 +13,7 @@ type Props = {
 
 export default function HomePage({ seo }: Props) {
   const { t } = useTranslation();
+  const { data: session } = useSession();
   return (
     <>
       {seo && <SEO {...seo} />}
@@ -22,6 +24,24 @@ export default function HomePage({ seo }: Props) {
         <RenderIcon name="heart" strokeWidth={2} className="w-4 h-4" />
         <RenderIcon name="search" strokeWidth={2} className="w-4 h-4" />
         <RenderIcon name="user" strokeWidth={2} className="w-4 h-4" />
+        <div className="max-w-[30%] mx-auto mt-16">
+          {session ? (
+            <button
+              className="mt-6 text-center border w-full py-3 font-medium bg-gray-900 border-gray-900 text-white"
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link href="/login">
+              <button className="mt-6 text-center border w-full py-3 font-medium bg-gray-900 border-gray-900 text-white">
+                Go to login
+              </button>
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );
