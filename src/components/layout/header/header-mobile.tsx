@@ -1,14 +1,17 @@
 import { IconName, RenderIcon } from '@/components/icons';
 import Logo from '@/components/logo';
 import Link from 'next/link';
+import { useState } from 'react';
 import { HeaderLayoutProps } from '.';
-import SearchPopup from './search-popup.tsx';
+import CartPopup from './cart-popup/cart-popup';
+import SearchPopup from './search-popup';
 
 export default function HeaderMobile({ navigation }: HeaderLayoutProps) {
   const actionsMenu: IconName[] = ['search', 'user', 'heart', 'cart'];
+  const [actionActive, setActionActive] = useState<IconName>();
 
   const onClickActionMenu = (name: IconName) => {
-    console.log('name:', name);
+    setActionActive(name);
   };
 
   return (
@@ -70,7 +73,13 @@ export default function HeaderMobile({ navigation }: HeaderLayoutProps) {
       </div>
 
       {/** Search */}
-      <SearchPopup />
+      <SearchPopup
+        isActive={actionActive === 'search'}
+        onClosePopup={() => setActionActive(undefined)}
+      />
+
+      {/** Cart */}
+      <CartPopup isActive={true} onClosePopup={() => setActionActive(undefined)} />
     </div>
   );
 }

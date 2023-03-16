@@ -1,0 +1,5 @@
+fragment Image on File {
+  id
+  url
+  metadata
+}

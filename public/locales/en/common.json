@@ -3,5 +3,15 @@
   "search": "Search",
   "search_products": "Search products",
   "all_categories": "All categories",
-  "search_results": "Search results"
+  "search_results": "Search results",
+  "view_all": "View all",
+  "your_cart": "Your cart",
+  "size": "Size",
+  "color": "Color",
+  "remove": "Remove",
+  "shopping_cart": "Shopping cart",
+  "coupon_code": "Coupon code",
+  "apply": "Apply",
+  "enter_coupon_code": "Enter coupon code",
+  "update_cart": "Update cart"
 }

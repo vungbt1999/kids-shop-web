@@ -5,17 +5,6 @@ query all_product(
   $skip: Int
 ) {
   all_product(where: $where, orderBy: $orderBy, take: $take, skip: $skip) {
-    id
-    name
-    description
-    price
-    discount
-    category {
-      name
-    }
-    images {
-      id
-      url
-    }
+    ...ProductList
   }
 }

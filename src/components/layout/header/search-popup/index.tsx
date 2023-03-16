@@ -1,18 +1,26 @@
 import Input from '@/components/common/input';
+import ProductList from '@/components/common/product-list';
+import Select from '@/components/common/select';
 import { RenderIcon } from '@/components/icons';
-import React, { useEffect, useState } from 'react';
+import { All_ProductQuery, SortOrder } from '@/config/graphql-api/generated';
+import { useApiClient } from '@/config/graphql-api/provider';
+import { ViewStyle } from '@/types';
+import { pagingDetect } from '@/utils/common';
+import { yupResolver } from '@hookform/resolvers/yup';
+import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useTranslation } from 'next-i18next';
-import Select from '@/components/common/select';
-import { Product, SortOrder } from '@/config/graphql-api/generated';
-import { useApiClient } from '@/config/graphql-api/provider';
-import { pagingDetect } from '@/utils/common';
 
-export default function SearchPopup() {
+export type SearchPopupProps = {
+  isActive?: boolean;
+  onClosePopup: () => void;
+};
+export default function SearchPopup({ isActive = false, onClosePopup }: SearchPopupProps) {
   const { t } = useTranslation();
-  const [productsRecommend, setProductsRecommend] = useState<Product[]>([]);
+  const [productsRecommend, setProductsRecommend] = useState<All_ProductQuery['all_product']>([]);
   const { apiClient } = useApiClient();
 
   useEffect(() => {
@@ -41,19 +49,27 @@ export default function SearchPopup() {
 
   const fetchingProduct = async () => {
     const res = await apiClient.all_product({
-      ...pagingDetect({ page: 6 }),
+      ...pagingDetect({ page: 1 }),
       orderBy: { createdAt: SortOrder.Desc }
     });
     const allProductsResult = res.all_product;
-    console.log('allProductsResult:', allProductsResult);
+    setProductsRecommend(allProductsResult || []);
   };
 
   return (
-    <div className="fixed top-0 right-0 left-0 bottom-0 w-full h-full bg-white z-[1]">
+    <div
+      className={clsx(
+        'fixed top-0 right-0 left-0 bottom-0 w-full h-full bg-white z-[1] overflow-auto transition-all duration-300',
+        {
+          'translate-x-full': !isActive,
+          'translate-x-0': isActive
+        }
+      )}
+    >
       {/** Search Header */}
       <div className="flex items-center justify-center px-8 py-6 border-b border-gray-100 relative">
         <p className="text-lg font-medium capitalize">{t('search_products')}</p>
-        <div className="absolute top-1/2 right-8 -translate-y-1/2">
+        <div className="absolute top-1/2 right-8 -translate-y-1/2" onClick={onClosePopup}>
           <RenderIcon name="close" className="text-secondary opacity-50" />
         </div>
       </div>
@@ -86,7 +102,12 @@ export default function SearchPopup() {
 
       {/** Search Recommend */}
       <div className="p-8">
-        <p className="text-base capitalize">{t('search_result')}:</p>
+        <p className="text-base capitalize mb-6">{t('search_results')}:</p>
+        <ProductList items={productsRecommend} view={ViewStyle.horizontal} />
+        <Link href="/#" className="flex items-center text-gray-900 font-medium capitalize mt-6">
+          {t('view_all')}
+          <RenderIcon name="arrow-right" className="w-4 h-4 ml-2" />
+        </Link>
       </div>
     </div>
   );

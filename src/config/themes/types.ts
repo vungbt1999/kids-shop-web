@@ -24,6 +24,7 @@ export type ColorPalette = {
   twitter?: ColorPaletteConfig;
   linkedin?: ColorPaletteConfig;
   gray?: ColorPaletteConfig;
+  grey?: ColorPaletteConfig;
 
   blue?: ColorPaletteConfig;
   indigo?: ColorPaletteConfig;

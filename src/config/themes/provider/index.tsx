@@ -38,6 +38,9 @@ export const getStyle = (uiConfig: UIConfig) => {
     '--color-gray-700': uiConfig.colors.gray?._700,
     '--color-gray-900': uiConfig.colors.gray?._900,
 
+    // Grey Color
+    '--color-grey': uiConfig.colors.grey?.default,
+
     '--color-blue': uiConfig.colors.blue?.default,
     '--color-indigo': uiConfig.colors.indigo?.default,
     '--color-purple': uiConfig.colors.purple?.default,

@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/pages/api/auth/[...nextauth].page.tsx",
+    "src/pages/api/auth/[...nextauth].page.tsx", "src/components/layout/header/search-popup",
   ],
   "exclude": ["node_modules"]
 }

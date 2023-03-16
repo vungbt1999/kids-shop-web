@@ -15,6 +15,7 @@ export type ImageFormat = Record<
 >;
 
 export type ImageObj = {
+  id?: string;
   formats?: ImageFormat | null;
   url: string;
   alternativeText?: string | null;
@@ -22,3 +23,13 @@ export type ImageObj = {
   width?: number | null;
   height?: number | null;
 };
+
+export enum ViewStyle {
+  horizontal = 'horizontal',
+  vertical = 'vertical'
+}
+
+export enum StyleVariant {
+  style_1 = 'style_1',
+  style_2 = 'style_2'
+}

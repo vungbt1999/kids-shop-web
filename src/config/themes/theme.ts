@@ -63,6 +63,9 @@ export const themeConfig: UIConfig = {
       _800: '#2b2b2b',
       _900: '#1f1f1f'
     },
+    grey: {
+      default: '#767676'
+    },
     light: {
       default: '#f5f5f5'
     },
