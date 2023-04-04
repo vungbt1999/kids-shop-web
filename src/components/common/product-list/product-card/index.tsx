@@ -12,7 +12,7 @@ export type CardProductProps = {
   promotionPrice?: number | null;
   categoryName?: string;
   view?: ViewStyle;
-  status?: ProductStatus;
+  status?: ProductStatus | null;
   className?: string;
 };
 

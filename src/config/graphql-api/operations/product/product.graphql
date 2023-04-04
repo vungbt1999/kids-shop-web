@@ -1,10 +1,10 @@
-query all_product(
+query allProduct(
   $where: ProductWhereInput
   $orderBy: [ProductOrderByWithRelationInput!]
   $take: Int
   $skip: Int
 ) {
   all_product(where: $where, orderBy: $orderBy, take: $take, skip: $skip) {
-    ...ProductList
+    ...Product
   }
 }

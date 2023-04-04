@@ -1,5 +1,2 @@
-import React from 'react';
-
-export function Button() {
-  return <div>Button</div>;
-}
+export * from './button';
+export * from './button-link';

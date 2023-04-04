@@ -13,5 +13,8 @@
   "coupon_code": "Coupon code",
   "apply": "Apply",
   "enter_coupon_code": "Enter coupon code",
-  "update_cart": "Update cart"
+  "update_cart": "Update cart",
+  "continue_to_checkout": "Continue to checkout",
+  "view_cart": "View cart",
+  "subtotal": "Subtotal"
 }

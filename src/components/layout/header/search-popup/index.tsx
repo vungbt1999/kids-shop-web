@@ -2,7 +2,7 @@ import Input from '@/components/common/input';
 import ProductList from '@/components/common/product-list';
 import Select from '@/components/common/select';
 import { RenderIcon } from '@/components/icons';
-import { All_ProductQuery, SortOrder } from '@/config/graphql-api/generated';
+import { AllProductVariantQuery, SortOrder } from '@/config/graphql-api/generated';
 import { useApiClient } from '@/config/graphql-api/provider';
 import { ViewStyle } from '@/types';
 import { pagingDetect } from '@/utils/common';
@@ -20,7 +20,9 @@ export type SearchPopupProps = {
 };
 export default function SearchPopup({ isActive = false, onClosePopup }: SearchPopupProps) {
   const { t } = useTranslation();
-  const [productsRecommend, setProductsRecommend] = useState<All_ProductQuery['all_product']>([]);
+  const [productsRecommend, setProductsRecommend] = useState<
+    AllProductVariantQuery['all_product_variant']
+  >([]);
   const { apiClient } = useApiClient();
 
   useEffect(() => {
@@ -48,11 +50,11 @@ export default function SearchPopup({ isActive = false, onClosePopup }: SearchPo
   };
 
   const fetchingProduct = async () => {
-    const res = await apiClient.all_product({
+    const res = await apiClient.allProductVariant({
       ...pagingDetect({ page: 1 }),
       orderBy: { createdAt: SortOrder.Desc }
     });
-    const allProductsResult = res.all_product;
+    const allProductsResult = res.all_product_variant;
     setProductsRecommend(allProductsResult || []);
   };
 
