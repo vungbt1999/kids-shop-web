@@ -1,0 +1,10 @@
+query allProductVariant(
+  $where: ProductVariantWhereInput
+  $orderBy: [ProductVariantOrderByWithRelationInput!]
+  $take: Int
+  $skip: Int
+) {
+  all_product_variant(where: $where, orderBy: $orderBy, take: $take, skip: $skip) {
+    ...ProductVariant
+  }
+}

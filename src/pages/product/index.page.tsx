@@ -1,4 +1,4 @@
-import { Product } from '@/config/graphql-api/generated';
+import { AllProductQuery } from '@/config/graphql-api/generated';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { withTranslations } from '@/middleware/withSSTranslations';
@@ -8,7 +8,7 @@ import { useApiClient } from '@/config/graphql-api/provider';
 
 export default function ProductPage() {
   const router = useRouter();
-  const [data, setData] = useState<Product[]>([]);
+  const [data, setData] = useState<AllProductQuery['all_product']>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { apiClient } = useApiClient();
 
@@ -21,7 +21,7 @@ export default function ProductPage() {
     try {
       if (loading) return;
       setLoading(true);
-      const res = await apiClient.all_product();
+      const res = await apiClient.allProduct();
       if (res && res.all_product) {
         setData(res.all_product || []);
       }

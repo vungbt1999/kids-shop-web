@@ -9,6 +9,7 @@ export type SelectProps = {
   name: string;
   options: { title: string; value: string }[];
   className?: string;
+  size?: 'sm' | 'md';
 };
 
 export default function Select({
@@ -17,7 +18,8 @@ export default function Select({
   control,
   name,
   options,
-  className
+  className,
+  size = 'md'
 }: SelectProps) {
   return (
     <Controller
@@ -35,9 +37,11 @@ export default function Select({
               name="cars"
               id="cars"
               className={clsx(
-                'outline-none py-3 pl-[1.3rem] pr-16 text-base border-gray-100 border focus:border-gray-900 transition-all w-full',
+                'outline-none pr-16 text-base border-gray-100 border focus:border-gray-900 transition-all w-full',
                 {
-                  '!border-danger': errorMss && errorMss.length > 0
+                  '!border-danger': errorMss && errorMss.length > 0,
+                  'select-size-md py-3 pl-[1.3rem]': size === 'md',
+                  'select-size-sm py-1 pl-2': size === 'sm'
                 }
               )}
             >

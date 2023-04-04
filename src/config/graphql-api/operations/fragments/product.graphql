@@ -1,14 +1,20 @@
-fragment ProductList on Product {
+fragment ProductItem on Product {
   id
   name
   description
   price
-  promotionPrice
   status
   category {
     name
   }
   images {
     ...Image
+  }
+}
+
+fragment Product on Product {
+  ...ProductItem
+  productVariants {
+    ...ProductVariantItem
   }
 }

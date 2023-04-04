@@ -1,10 +1,10 @@
-import { ProductListFragment } from '@/config/graphql-api/generated';
+import { ProductVariantFragment } from '@/config/graphql-api/generated';
 import { ViewStyle } from '@/types';
 import clsx from 'clsx';
 import ProductCard from './product-card';
 
 export type ProductListProps = {
-  items: ProductListFragment[];
+  items: ProductVariantFragment[];
   view?: ViewStyle;
   className?: string;
 };
@@ -23,11 +23,16 @@ export default function ProductList({
       })}
     >
       {items.map((item, index) => {
+        const product = item.product;
         return (
           <ProductCard
             {...item}
-            images={item.images || []}
-            categoryName={item.category?.name}
+            images={product.images || []}
+            promotionPrice={item.promotionPrice}
+            price={item.priceAdjustment}
+            name={product.name}
+            status={product.status}
+            categoryName={product.category?.name}
             key={item.id || index}
             view={view}
           />

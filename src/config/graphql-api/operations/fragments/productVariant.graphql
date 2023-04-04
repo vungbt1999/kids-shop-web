@@ -1,0 +1,15 @@
+fragment ProductVariantItem on ProductVariant {
+  id
+  size
+  color
+  quantity
+  priceAdjustment
+  promotionPrice
+}
+
+fragment ProductVariant on ProductVariant {
+  ...ProductVariantItem
+  product {
+    ...ProductItem
+  }
+}
