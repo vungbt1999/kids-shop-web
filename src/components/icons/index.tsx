@@ -20,6 +20,7 @@ import Tag from './tag';
 import Truck from './truck';
 import User from './user';
 import Youtube from './youtube';
+import { CartEmpty } from './empties';
 
 export type IconProps = {
   className?: string;
@@ -51,7 +52,8 @@ export type IconName =
   | 'truck'
   | 'repeat'
   | 'lock'
-  | 'tag';
+  | 'tag'
+  | 'cart-empty';
 
 export type IconsType = Record<IconName, Icon>;
 
@@ -118,6 +120,9 @@ export const Icons: IconsType = {
   },
   tag: (props: IconProps) => {
     return <Tag {...props} />;
+  },
+  'cart-empty': (props: IconProps) => {
+    return <CartEmpty {...props} />;
   }
 };
 

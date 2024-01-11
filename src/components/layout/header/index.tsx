@@ -15,7 +15,7 @@ export type HeaderLayoutProps = {
 export function HeaderLayout(props: HeaderLayoutProps) {
   return (
     <nav>
-      <div className="container flex flex-wrap items-center justify-between py-6">
+      <div className="container flex flex-wrap items-center justify-between py-6 z-[2] relative">
         <HeaderDesktop {...props} />
         <HeaderMobile {...props} />
       </div>

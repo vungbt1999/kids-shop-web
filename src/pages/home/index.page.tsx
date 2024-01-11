@@ -1,11 +1,14 @@
-import { useTranslation } from 'next-i18next';
-import { withTranslations } from '@/middleware/withSSTranslations';
-import { withRevalidate } from '@/middleware/withRevalidate';
-import { GetStaticPropsContext } from 'next';
 import { SEO, SEOData } from '@/components/seo';
-import { RenderIcon } from '@/components/icons';
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
+import { withRevalidate } from '@/middleware/withRevalidate';
+import { withTranslations } from '@/middleware/withSSTranslations';
+import { GetStaticPropsContext } from 'next';
+import { useSession } from 'next-auth/react';
+import { useTranslation } from 'next-i18next';
+
+import BannerSwiper from './components/banner-swiper';
+import Categories, { CategoryItem } from './components/categories';
+import CategoriesSwiper, { CategoriesSwiperProps } from './components/categories-swiper';
+import { CategoryType } from '@/config/graphql-api/generated';
 
 type Props = {
   seo: SEOData;
@@ -14,35 +17,84 @@ type Props = {
 export default function HomePage({ seo }: Props) {
   const { t } = useTranslation();
   const { data: session } = useSession();
+
+  const categories: CategoryItem[] = [
+    {
+      title: 'Summer Hats',
+      image: { url: '/images/products/product-1.jpeg' },
+      ctaButton: { title: 'Shop Now', onClick: () => alert('Summer Hats') }
+    },
+    {
+      title: 'Men Hats',
+      image: { url: '/images/products/product-2.jpeg' },
+      ctaButton: { title: 'Shop Now', onClick: () => alert('Men Hats') }
+    },
+    {
+      title: 'Floral Dresses',
+      image: { url: '/images/products/product-3.jpeg' },
+      ctaButton: { title: 'Shop Now', onClick: () => alert('Floral Dresses') }
+    }
+  ];
+
+  const categoriesSwiper: CategoriesSwiperProps = {
+    navigation: [
+      { title: 'Women', value: CategoryType.Women },
+      { title: 'Men', value: CategoryType.Men },
+      { title: 'Kid', value: CategoryType.Kid }
+    ],
+    items: [
+      {
+        title: 'Jackets',
+        image: {
+          url: 'https://yevgenysim-turkey.github.io/shopper/assets/img/products/product-126.jpg'
+        },
+        total: 90
+      },
+      {
+        title: 'Dresses',
+        image: {
+          url: 'https://yevgenysim-turkey.github.io/shopper/assets/img/products/product-25.jpg'
+        },
+        total: 63
+      },
+      {
+        title: 'Tops',
+        image: {
+          url: 'https://yevgenysim-turkey.github.io/shopper/assets/img/products/product-26.jpg'
+        },
+        total: 24
+      },
+      {
+        title: 'T-shirts',
+        image: {
+          url: 'https://yevgenysim-turkey.github.io/shopper/assets/img/products/product-27.jpg'
+        },
+        total: 67
+      },
+      {
+        title: 'Shoes',
+        image: {
+          url: 'https://yevgenysim-turkey.github.io/shopper/assets/img/products/product-28.jpg'
+        },
+        total: 43
+      }
+    ],
+    title: t('shopByCategory')
+  };
   return (
     <>
       {seo && <SEO {...seo} />}
-      <div>
-        <h1 className="text-cyan">{t('home')}</h1>
-        <h1 className="text-primary">{t('messages:page_not_found')}</h1>
-        <RenderIcon name="cart" strokeWidth={2} className="w-4 h-4" />
-        <RenderIcon name="heart" strokeWidth={2} className="w-4 h-4" />
-        <RenderIcon name="search" strokeWidth={2} className="w-4 h-4" />
-        <RenderIcon name="user" strokeWidth={2} className="w-4 h-4" />
-        <div className="max-w-[30%] mx-auto mt-16">
-          {session ? (
-            <button
-              className="mt-6 text-center border w-full py-3 font-medium bg-gray-900 border-gray-900 text-white"
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Logout
-            </button>
-          ) : (
-            <Link href="/login">
-              <button className="mt-6 text-center border w-full py-3 font-medium bg-gray-900 border-gray-900 text-white">
-                Go to login
-              </button>
-            </Link>
-          )}
-        </div>
-      </div>
+      <BannerSwiper />
+
+      {/** CATEGORIES */}
+      <Categories items={categories} className="pt-6" />
+
+      {/** CATEGORIES SWIPER */}
+      <CategoriesSwiper
+        title={categoriesSwiper.title}
+        navigation={categoriesSwiper.navigation}
+        items={categoriesSwiper.items}
+      />
     </>
   );
 }

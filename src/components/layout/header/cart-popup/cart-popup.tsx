@@ -16,6 +16,7 @@ export type SearchPopupProps = {
 };
 export default function CartPopup({ isActive = false, onClosePopup }: SearchPopupProps) {
   const { t } = useTranslation();
+
   const [productsRecommend, setProductsRecommend] = useState<
     AllProductVariantQuery['all_product_variant']
   >([]);
@@ -57,7 +58,10 @@ export default function CartPopup({ isActive = false, onClosePopup }: SearchPopu
       </div>
 
       {/** Product Cart List */}
-      <CartProductList items={productsRecommend} />
+      <CartProductList
+        items={productsRecommend}
+        onRemoveItem={(id) => setProductsRecommend(productsRecommend.filter((x) => x.id !== id))}
+      />
     </div>
   );
 }

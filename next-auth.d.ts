@@ -2,7 +2,7 @@
 
 export interface Token {
   accessToken: string;
-  accessTokenExpires: string;
+  expires: string;
 }
 
 declare module 'next-auth/jwt' {

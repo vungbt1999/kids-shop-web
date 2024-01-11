@@ -33,3 +33,16 @@ export enum StyleVariant {
   style_1 = 'style_1',
   style_2 = 'style_2'
 }
+
+export type CTAButton = {
+  title: string;
+  onClick?: () => void;
+  className?: string;
+  style?: StyleVariant;
+};
+
+export type CategoryType = {
+  WOMEN: 'WOMEN';
+  MEN: 'MEN';
+  KID: 'KID';
+};

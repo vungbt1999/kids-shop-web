@@ -79,7 +79,10 @@ export default function HeaderMobile({ navigation }: HeaderLayoutProps) {
       />
 
       {/** Cart */}
-      <CartPopup isActive={true} onClosePopup={() => setActionActive(undefined)} />
+      <CartPopup
+        isActive={actionActive === 'cart'}
+        onClosePopup={() => setActionActive(undefined)}
+      />
     </div>
   );
 }
